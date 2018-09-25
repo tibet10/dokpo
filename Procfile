@@ -1,0 +1,1 @@
+web: gunicorn dokpo.wsgi --log-file -

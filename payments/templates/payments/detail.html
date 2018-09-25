@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Payment Details</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'payments/css/style.css' %}">
+{% endblock %}
+{% block body %}
+     <div class="container">
+        <div class="row">
+            <div class="payment-col col-lg-4">
+                <p>Detail for:
+                <p>{{ payment.details }}</p>
+            </div>
+        </div>
+     </div>
+{% endblock %}
