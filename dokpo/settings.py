@@ -70,11 +70,11 @@ WSGI_APPLICATION = 'dokpo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DB_PROD_NAME'),
-        'USER': config('DB_PROD_USERNAME'),
-        'PASSWORD': config('DB_PROD_PASSWORD'),
-        'HOST': config('DB_PROD_HOST'),
-        'PORT': config('DB_PROD_PORT'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USERNAME'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
 }
 
@@ -123,7 +123,7 @@ LOGIN_REDIRECT_URL = '/account/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
 
-#DATABASES['default'] = dj_database_url.config(default=config('DATABASE_URL'))
+DATABASES['default'] = dj_database_url.config(default=config('DATABASE_URL'))
