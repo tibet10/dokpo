@@ -9,17 +9,15 @@
         <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-        {% comment %}head{% endcomment %}
         {% block head %}
         {% endblock %}
     </head>
     <body>
-        {% include 'nav.html'%}
+        {% include 'nav.html' with header='Dokpo'%}
         <div class="main-container">
             {% block body %}
             {% endblock %}
         </div>
-
         <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
         <script src="{% static 'js/popper.min.js' %}"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
