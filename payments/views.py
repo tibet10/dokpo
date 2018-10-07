@@ -34,8 +34,10 @@ def payment_create(request):
         payment_form = PaymentForm()
         pay_to_form = PayToForm()
 
-    return render(request, "payments/create.html", {
+    context = {
         'payment_form': payment_form,
         'pay_to_form': pay_to_form,
-        'title': 'Pay To'})
+        'title': 'Pay To'
+    }
+    return render(request, "payments/create.html", context)
 

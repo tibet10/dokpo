@@ -8,12 +8,11 @@
         <link rel="stylesheet" href="{% static 'css/navbar-top.css' %}">
         <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
         {% block head %}
         {% endblock %}
     </head>
     <body>
-        {% include 'nav.html' with header='Dokpo'%}
+        {% include 'nav.html' with nav='Dhrogpo'%}
         <div class="main-container">
             {% block body %}
             {% endblock %}
