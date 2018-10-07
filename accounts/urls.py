@@ -13,6 +13,6 @@ urlpatterns = [
     # url(r'^login/$', auth_views.login, {'template_name': 'accounts/login.html'}, name='login')
     url(r'^login/', login_view, name='login'),
     url(r'^logout/', logout_view, name='logout'),
-url(r'^register/', register_view, name='register'),
+    url(r'^register/', register_view, name='register'),
     url(r'^$', home, name='home')
 ]

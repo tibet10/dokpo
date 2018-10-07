@@ -27,7 +27,6 @@ def payment_create(request):
             payment.created_date = timezone.now()
             payment.payment_status_id = 2
             payment.payment_type_id = 1
-
             payment.save()
 
             return redirect('payments:detail', id=payment.pk)
@@ -38,5 +37,5 @@ def payment_create(request):
     return render(request, "payments/create.html", {
         'payment_form': payment_form,
         'pay_to_form': pay_to_form,
-        'title': 'create form'})
+        'title': 'Pay To'})
 
