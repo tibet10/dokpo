@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Payments,PaymentType, PaymentStatus, PayTo, ReceiveFrom
+from .models import Payments, PaymentType
 
 
 class PaymentForm(forms.ModelForm):
@@ -22,17 +22,28 @@ class PaymentForm(forms.ModelForm):
         model = Payments
         fields = ['subject', 'amount', 'details']
 
+# class PayToForm(forms.ModelForm):
+#     user = forms.ModelChoiceField(
+#         queryset=User.objects.all(),
+#         required=True,
+#         empty_label="Select User"
+#     )
+#     class Meta:
+#         model = PayTo
+#         fields = ['user']
 
-class PayToForm(forms.ModelForm):
-    user = forms.ModelChoiceField(
-        queryset=User.objects.all(),
-        required=True,
-        empty_label="Select User"
+
+class ExtraFieldsForm(forms.Form):
+    payment_type = forms.ModelChoiceField(
+            queryset=PaymentType.objects.only('name'),
+            required=True,
+            empty_label="Select Payment Type"
     )
 
-    class Meta:
-        model = PayTo
-        fields = ['user']
-
+    user = forms.ModelChoiceField(
+            queryset=User.objects.all(),
+            required=True,
+            empty_label="Select User"
+     )
 
 

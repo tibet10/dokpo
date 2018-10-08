@@ -5,16 +5,8 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'payments/css/style.css' %}">
 {% endblock %}
-{% block body %}
-     {% comment %}<form action="#" method="post" novalidate>
-        {% csrf_token %}
-         <div class="form-group">
-            {{ pay_to_form|crispy }}
-            {{ payment_form|crispy }}
-          </div>
-         <input type="submit" value="Submit">
-     </form>{% endcomment %}
 
+{% block body %}
     <div class="container">
         <form class="form-horizontal" method="post" novalidate>
          {% csrf_token %}
@@ -27,14 +19,16 @@
                     {% endfor %}
                 </ol>
             {% endif %}
-            {% for field in pay_to_form %}
+            {% for field in extra_form %}
                     <div class="form-group row">
                             <label class="col-sm-2 col-form-label">{{ field.label }}</label>
                             <div class="col-sm-10">
                                 {{ field }}
                             </div>
                             {% if field.help_text %}
-                                <p class="help-inline"><small>{{ field.help_text }}</small></p>
+                                <p class="help-inline">
+                                    <small>{{ field.help_text }}</small>
+                                </p>
                             {% endif %}
                         </div>
             {% endfor %}
@@ -45,7 +39,9 @@
                             {{ field }}
                         </div>
                         {% if field.help_text %}
-                            <p class="help-inline"><small>{{ field.help_text }}</small></p>
+                            <p class="help-inline">
+                                <small>{{ field.help_text }}</small>
+                            </p>
                         {% endif %}
                     </div>
             {% endfor %}

@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-from .forms import PaymentForm, PayToForm
-from .models import Payments
+from .forms import PaymentForm, ExtraFieldsForm
+from .models import Payments, PayTo, ReceiveFrom
+from django.contrib.auth.models import User
 
 
-def payments(request):
+def home(request):
     payments = Payments.objects.all().order_by('created_date')
     return render(request, 'payments/index.html', {'payments': payments})
 
@@ -18,10 +19,11 @@ def payment_detail(request, id):
 
 def payment_create(request):
     if request.method == 'POST':
-        payment_form = PaymentForm(request.POST)
-        pay_to_form = PayToForm(request.POST)
+        payment_form = PaymentForm(request.POST or None)
+        extra_form = ExtraFieldsForm(request.POST or None)
 
-        if payment_form.is_valid() and pay_to_form.is_valid():
+        if payment_form.is_valid() and extra_form.is_valid():
+            # payment table
             payment = payment_form.save(commit=False)
             payment.created_by_id = request.POST['user']
             payment.created_date = timezone.now()
@@ -29,14 +31,28 @@ def payment_create(request):
             payment.payment_type_id = 1
             payment.save()
 
+            # extra field populating pay to
+            user = User.objects.get(id=request.POST['user'])
+            payment_type = extra_form.cleaned_data['payment_type']
+            if payment_type == 'Pay':
+                pay_to = PayTo()
+                pay_to.payment = payment
+                pay_to.user = user
+                pay_to.save()
+            else:
+                receive_from = ReceiveFrom()
+                receive_from.payment = payment
+                receive_from.user = user
+                receive_from.save()
+
             return redirect('payments:detail', id=payment.pk)
     else:
         payment_form = PaymentForm()
-        pay_to_form = PayToForm()
+        extra_form = ExtraFieldsForm()
 
     context = {
         'payment_form': payment_form,
-        'pay_to_form': pay_to_form,
+        'extra_form': extra_form,
         'title': 'Pay To'
     }
     return render(request, "payments/create.html", context)

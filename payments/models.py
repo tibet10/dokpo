@@ -8,12 +8,12 @@ class PaymentStatus(models.Model):
     PENDING = 'P'
     STATUS_CODE = (
         (PENDING, 'Pending'),
-        (APPROVED,'Approved')
+        (APPROVED, 'Approved')
     )
     name = models.CharField(max_length=255, null=False)
     code = models.CharField(max_length=10, choices=STATUS_CODE, null=False, default=PENDING)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -27,8 +27,9 @@ class PaymentType(models.Model):
     name = models.CharField(max_length=255, null=False)
     code = models.CharField(max_length=10, choices=TYPE_CODE, null=False, default=PAY)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
+
 
 
 class Payments(models.Model):

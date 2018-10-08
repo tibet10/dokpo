@@ -9,6 +9,9 @@
 
 {% block body %}
  <div class="container">
+    <div>
+        <a href="{% url 'payments:create' %}">New Payment</a>
+    </div>
     <div class="payments">
     {% for payment in payments %}
         <div class="payment">
