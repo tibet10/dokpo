@@ -66,7 +66,6 @@ WSGI_APPLICATION = 'dokpo.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -77,7 +76,6 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -123,4 +121,5 @@ LOGIN_REDIRECT_URL = '/account/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True))
+DATABASE_URL = config('DATABASE_URL')
+DATABASES['default'].update(dj_database_url.config(conn_max_age=500, ssl_require=True, default=DATABASE_URL))

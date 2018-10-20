@@ -31,7 +31,6 @@ class PaymentType(models.Model):
         return self.name
 
 
-
 class Payments(models.Model):
     subject = models.CharField(max_length=255, null=False, default='')
     details = models.TextField(max_length=500, null=True, blank=True)
@@ -39,27 +38,11 @@ class Payments(models.Model):
     created_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
     payment_type = models.ForeignKey(PaymentType, null=False, on_delete=models.DO_NOTHING)
     payment_status = models.ForeignKey(PaymentStatus, null=False, on_delete=models.DO_NOTHING)
-    created_by = models.ForeignKey(User, null=False, on_delete=models.DO_NOTHING)
+    created_by = models.TextField(max_length=500, null=True, blank=True)
+    users = models.ManyToManyField(User)
 
     def __str__(self):
         return self.title
-
-
-class PayTo(models.Model):
-    payment = models.ForeignKey(Payments, null=False, on_delete=models.DO_NOTHING)
-    user = models.ForeignKey(User, null=False, on_delete=models.DO_NOTHING)
-
-    def __str__(self):
-        return self.payment.title
-
-
-class ReceiveFrom(models.Model):
-    payment = models.ForeignKey(Payments, null=False, on_delete=models.DO_NOTHING)
-    user = models.ForeignKey(User, null=False, on_delete=models.DO_NOTHING)
-
-    def __str__(self):
-        return self.payment.title
-
 
 
 

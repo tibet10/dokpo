@@ -22,16 +22,6 @@ class PaymentForm(forms.ModelForm):
         model = Payments
         fields = ['subject', 'amount', 'details']
 
-# class PayToForm(forms.ModelForm):
-#     user = forms.ModelChoiceField(
-#         queryset=User.objects.all(),
-#         required=True,
-#         empty_label="Select User"
-#     )
-#     class Meta:
-#         model = PayTo
-#         fields = ['user']
-
 
 class ExtraFieldsForm(forms.Form):
     payment_type = forms.ModelChoiceField(

@@ -11,7 +11,7 @@
         <form class="form-horizontal" method="post" novalidate>
          {% csrf_token %}
         <fieldset>
-            <legend>{{ title }}</legend>
+            <legend>{{ title }}:</legend>
             {% if form.subject.errors %}
                 <ol role="alertdialog">
                     {% for error in form.subject.errors %}
