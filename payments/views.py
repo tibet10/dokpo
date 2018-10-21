@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.utils import timezone
 from .forms import PaymentForm, ExtraFieldsForm
-from .models import Payments\
-    # , PayTo, ReceiveFrom
+from .models import Payments, PaymentStatus, PaymentType, PaymentMembership
 from django.contrib.auth.models import User
 
 
@@ -22,29 +20,31 @@ def payment_create(request):
         extra_form = ExtraFieldsForm(request.POST or None)
 
         if payment_form.is_valid() and extra_form.is_valid():
-            # payment table
+            extra_data = extra_form.cleaned_data
+
+            # payment
             payment = payment_form.save(commit=False)
-            payment.created_by_id = request.POST['user']
-            payment.created_date = timezone.now()
-            payment.payment_status_id = 2
-            payment.payment_type_id = 1
+            payment.payment_status = PaymentStatus.objects.filter(name='Pending')[0]
+            payment.payment_type = extra_data['payment_type']
+            payment.created_by = request.user
             payment.save()
 
-            # extra field populating pay to
-            # user = User.objects.get(id=request.POST['user'])
-            # payment_type = extra_form.cleaned_data['payment_type']
-            # if payment_type == 'Pay':
-                # pay_to = PayTo()
-                # pay_to.payment = payment
-                # pay_to.user = user
-                # pay_to.save()
-            # else:
-                # receive_from = ReceiveFrom()
-                # receive_from.payment = payment
-                # receive_from.user = user
-                # receive_from.save()
+            # first user
+            payment_membership_first = PaymentMembership()
+            payment_membership_first.user = request.user
+            payment_membership_first.payment_type = extra_data['payment_type']
+            payment_membership_first.payments = payment
+            payment_membership_first.save()
 
-            return redirect('payments:detail', id=payment.pk)
+            # second user
+            payment_membership_second = PaymentMembership()
+            payment_membership_second.user = extra_data['user']
+            other_type = PaymentType.objects.all().exclude(pk=payment_membership_first.payment_type.pk)[0]
+            payment_membership_second.payment_type = other_type
+            payment_membership_second.payments = payment
+            payment_membership_second.save()
+
+        return redirect('payments:detail', id=payment.pk)
     else:
         payment_form = PaymentForm()
         extra_form = ExtraFieldsForm()

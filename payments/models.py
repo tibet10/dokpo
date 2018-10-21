@@ -38,11 +38,24 @@ class Payments(models.Model):
     created_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
     payment_type = models.ForeignKey(PaymentType, null=False, on_delete=models.DO_NOTHING)
     payment_status = models.ForeignKey(PaymentStatus, null=False, on_delete=models.DO_NOTHING)
-    created_by = models.TextField(max_length=500, null=True, blank=True)
-    users = models.ManyToManyField(User)
+    created_by = models.ForeignKey(User, null=True, related_name="payments_created_by", on_delete=models.SET_NULL)
+    users = models.ManyToManyField(User, through='PaymentMembership')
 
     def __str__(self):
-        return self.title
+        return self.subject
+
+    def save_model(self, request, obj, form, change):
+        obj.created_by = request.user
+        super().save_model(request, obj, form, change)
+
+
+class PaymentMembership(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    payments = models.ForeignKey(Payments, on_delete=models.CASCADE)
+    date_joined = models.DateField(default=timezone.now, null=True, blank=True)
+    payment_type = models.ForeignKey(PaymentType, null=False, on_delete=models.DO_NOTHING)
+
+
 
 
 
