@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+    <title>Groups</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'groups/css/style.css' %}">
+{% endblock %}
+
+{% block body %}
+ <div class="container">
+    <div class="groups">
+        {{ description }}
+    </div>
+ </div>
+{% endblock %}

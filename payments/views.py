@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PaymentForm, ExtraFieldsForm
-from .models import Payments, PaymentStatus, PaymentType, PaymentMembership
+from .models import Payments, PaymentStatus, PaymentType, PaymentMembership, Groups
 from django.contrib.auth.models import User
 
 
@@ -21,27 +21,22 @@ def payment_create(request):
 
         if payment_form.is_valid() and extra_form.is_valid():
             extra_data = extra_form.cleaned_data
+            current_group = Groups.objects.get(pk=1)
+            payment = payment_form.save(user=request.user, p_t=extra_data['payment_type'], c_g=current_group)
 
-            # payment
-            payment = payment_form.save(commit=False)
-            payment.payment_status = PaymentStatus.objects.filter(name='Pending')[0]
-            payment.payment_type = extra_data['payment_type']
-            payment.created_by = request.user
-            payment.save()
-
-            # first user
+            # first member
             payment_membership_first = PaymentMembership()
             payment_membership_first.user = request.user
             payment_membership_first.payment_type = extra_data['payment_type']
-            payment_membership_first.payments = payment
+            payment_membership_first.payment = payment
             payment_membership_first.save()
 
-            # second user
+            # second member
             payment_membership_second = PaymentMembership()
             payment_membership_second.user = extra_data['user']
             other_type = PaymentType.objects.all().exclude(pk=payment_membership_first.payment_type.pk)[0]
             payment_membership_second.payment_type = other_type
-            payment_membership_second.payments = payment
+            payment_membership_second.payment = payment
             payment_membership_second.save()
 
         return redirect('payments:detail', id=payment.pk)

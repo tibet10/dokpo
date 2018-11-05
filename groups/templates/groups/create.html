@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
+
 {% block head %}
-    <title>Payment</title>
+    <title>Groups</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'payments/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'groups/css/style.css' %}">
 {% endblock %}
 
 {% block body %}
@@ -12,17 +13,11 @@
          {% csrf_token %}
         <fieldset>
             <legend>{{ title }}:</legend>
-            {% if form.subject.errors %}
-                <ol role="alertdialog">
-                    {% for error in form.subject.errors %}
-                    <li role="alert"><strong>{{ error|escape }}</strong></li>
-                    {% endfor %}
-                </ol>
-            {% endif %}
-            {% for field in extra_form %}
-               <div class="form-group row">
+            {% for field in group_form %}
+                {{ field.errors }}
+                <div class="form-group row">
                         <label class="col-sm-2 col-form-label">{{ field.label }}</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-6">
                             {{ field }}
                         </div>
                         {% if field.help_text %}
@@ -30,12 +25,14 @@
                                 <small>{{ field.help_text }}</small>
                             </p>
                         {% endif %}
-                    </div>
+                 </div>
             {% endfor %}
-            {% for field in payment_form %}
+            <hr>
+            <h3>Please send email invitations:</h3>
+            {% for field in extra_form %}
                 <div class="form-group row">
                         <label class="col-sm-2 col-form-label">{{ field.label }}</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-6">
                             {{ field }}
                         </div>
                         {% if field.help_text %}
@@ -47,7 +44,7 @@
             {% endfor %}
         </fieldset>
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary" >Submit</button>
+            <button type="submit" class="btn btn-primary" >Add New Group</button>
         </div>
     </form>
     </div>

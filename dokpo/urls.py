@@ -6,7 +6,8 @@ urlpatterns = [
     url(r'', include('core.urls', namespace='core')),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
-    url(r'^payments/', include('payments.urls', namespace='payments'))
+    url(r'^payments/', include('payments.urls', namespace='payments')),
+    url(r'^groups/', include('groups.urls', namespace='groups'))
 ]
 
 urlpatterns += staticfiles_urlpatterns()

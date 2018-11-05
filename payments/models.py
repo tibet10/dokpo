@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from groups.models import Groups
 
 
 class PaymentStatus(models.Model):
@@ -38,8 +39,9 @@ class Payments(models.Model):
     created_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
     payment_type = models.ForeignKey(PaymentType, null=False, on_delete=models.DO_NOTHING)
     payment_status = models.ForeignKey(PaymentStatus, null=False, on_delete=models.DO_NOTHING)
-    created_by = models.ForeignKey(User, null=True, related_name="payments_created_by", on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(User, null=True, related_name="payments_created_by", on_delete=models.DO_NOTHING)
     users = models.ManyToManyField(User, through='PaymentMembership')
+    group = models.ForeignKey(Groups, null=False, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.subject
@@ -51,8 +53,8 @@ class Payments(models.Model):
 
 class PaymentMembership(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    payments = models.ForeignKey(Payments, on_delete=models.CASCADE)
-    date_joined = models.DateField(default=timezone.now, null=True, blank=True)
+    payment = models.ForeignKey(Payments, on_delete=models.CASCADE)
+    date_joined = models.DateTimeField(default=timezone.now, null=True, blank=True)
     payment_type = models.ForeignKey(PaymentType, null=False, on_delete=models.DO_NOTHING)
 
 

@@ -29,7 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'payments',
     'core',
-    'accounts'
+    'accounts',
+    'groups'
 ]
 
 MIDDLEWARE = [

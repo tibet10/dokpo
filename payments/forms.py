@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Payments, PaymentType
+from .models import Payments, PaymentType, PaymentStatus
 
 
 class PaymentForm(forms.ModelForm):
@@ -21,6 +21,15 @@ class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payments
         fields = ['subject', 'amount', 'details']
+
+    def save(self, user, p_t,c_g,*args, **kwargs):
+        payment = super(PaymentForm, self).save(commit=False)
+        payment.payment_status = PaymentStatus.objects.filter(name='Pending')[0]
+        payment.payment_type = p_t
+        payment.created_by = user
+        payment.group = c_g
+        payment.save()
+        return payment
 
 
 class ExtraFieldsForm(forms.Form):
