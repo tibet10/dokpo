@@ -40,4 +40,4 @@ def register_view(request):
 
 def logout_view(request):
     logout(request)
-    return render(request, "accounts/logout.html", {})
+    return render(request, "accounts/login.html", {})
