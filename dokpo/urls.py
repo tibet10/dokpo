@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^payments/', include('payments.urls', namespace='payments')),
     url(r'^groups/', include('groups.urls', namespace='groups')),
 
-    url(r'^facebook/', include('allauth.urls')),
+    url(r'^fb/', include('allauth.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
