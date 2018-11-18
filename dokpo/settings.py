@@ -154,7 +154,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SITE_ID = 1
 
-LOGIN_REDIRECT_URL = '/account/'
+LOGIN_REDIRECT_URL = '/accounts/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
