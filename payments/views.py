@@ -14,6 +14,11 @@ def payment_detail(request, id):
     return render(request, 'payments/detail.html', {'payment': payment})
 
 
+def payment_grp_id(request, id):
+    payments = Payments.objects.filter(group_id=id).order_by('created_date')
+    return render(request, 'payments/index.html', {'payments': payments})
+
+
 def payment_create(request):
     if request.method == 'POST':
         payment_form = PaymentForm(request.POST or None)

@@ -41,7 +41,7 @@ class Payments(models.Model):
     payment_status = models.ForeignKey(PaymentStatus, null=False, on_delete=models.DO_NOTHING)
     created_by = models.ForeignKey(User, null=True, related_name="payments_created_by", on_delete=models.DO_NOTHING)
     users = models.ManyToManyField(User, through='PaymentMembership')
-    group = models.ForeignKey(Groups, null=False, on_delete=models.DO_NOTHING)
+    group = models.ForeignKey(Groups, null=False, on_delete=models.DO_NOTHING, related_name='payment')
 
     def __str__(self):
         return self.subject

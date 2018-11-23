@@ -13,6 +13,9 @@ class Groups(models.Model):
     def __str__(self):
         return self.name
 
+    def payment_id(self):
+        return self.payment.values_list('id', flat=True).first()
+
 
 class MemberStatus(models.Model):
     APPROVED = 'A'

@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import GroupForm, ExtraFieldForm
-from .models import  Groups, GroupMembership, MemberStatus
+from .models import Groups, GroupMembership, MemberStatus
 
 
 def home(request):
-    return render(request, 'groups/index.html', {'description': 'Welcome to groups' })
+    groups = Groups.objects.all()
+    return render(request, 'groups/index.html', {'description': 'Welcome to groups', 'groups': groups})
 
 
 def group_detail(request, id):

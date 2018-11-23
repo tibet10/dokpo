@@ -9,14 +9,18 @@
 
 {% block body %}
  <div class="container">
-    <div>
-        <a href="{% url 'groups:create' %}">Add New Group</a>
-    </div>
     <div class="groups">
-        {{ description }}
-        <div>
-            <a href="{% url 'payments:create' %}">Add New Payment</a>
-        </div>
+        {% for group in groups %}
+            <div class="group">
+                <h2>{{ group.name  }} </h2>
+                <p>{{ group.details }}</p>
+                {% if group.payment_id %}
+                    <a href="{% url 'payments:group' id=group.id %}">Show all payments</a>
+                {% else %}
+                    <a href="{% url 'payments:create' %}">Add New Payment</a>
+                {% endif %}
+            </div>
+        {% endfor %}
     </div>
  </div>
 {% endblock %}
