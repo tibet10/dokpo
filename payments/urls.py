@@ -1,11 +1,12 @@
 from django.conf.urls import url
+from django.urls import path, re_path
 from . import views
 
 app_name = 'dokpo'
 
 urlpatterns = [
-    url(r'^$', views.home, name='home'),
-    url(r'^group/(?P<id>\d+)/$', views.payment_grp_id, name='group'),
-    url(r'(?P<id>\d+)/$', views.payment_detail, name='detail'),
-    url(r'^create/$', views.payment_create, name='create')
+    url(r'^$', views.PaymentsView.as_view(), name='home'),
+    url(r'^(?P<pk>\d+)/$', views.PaymentDetail.as_view(), name='detail'),
+    url(r'^group/(?P<pk>\d+)/$', views.PaymentsView.as_view(), name='group'),
+    url(r'^create/(?P<group_id>\d+)/$', views.PaymentFormView.as_view(), name='create')
 ]

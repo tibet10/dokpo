@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Payments, PaymentType, PaymentStatus
+from .models import Payments, PaymentType, PaymentStatus, Groups
 
 
 class PaymentForm(forms.ModelForm):
@@ -14,35 +14,37 @@ class PaymentForm(forms.ModelForm):
     )
     details = forms.Textarea()
 
+    payment_type = forms.ModelChoiceField(
+        queryset=PaymentType.objects.only('name'),
+        required=True,
+        empty_label="Select Payment Type"
+    )
+
+    user = forms.ModelChoiceField(
+        queryset=User.objects.all(),
+        required=True,
+        empty_label="Select User"
+    )
+
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
         super(PaymentForm, self).__init__(*args, **kwargs)
         self.fields['details'].required = False
 
     class Meta:
         model = Payments
-        fields = ['subject', 'amount', 'details']
+        fields = ['payment_type', 'user', 'subject', 'amount', 'details']
 
-    def save(self, user, p_t, c_g, *args, **kwargs):
+    def save(self, *args, **kwargs):
         payment = super(PaymentForm, self).save(commit=False)
+        current_group = Groups.objects.get(pk=1)
         payment.payment_status = PaymentStatus.objects.filter(name='Pending')[0]
-        payment.payment_type = p_t
-        payment.created_by = user
-        payment.group = c_g
+        payment.payment_type = self.cleaned_data.get('payment_type')
+        payment.created_by = self.user
+        payment.group = current_group
         payment.save()
         return payment
 
 
-class ExtraFieldsForm(forms.Form):
-    payment_type = forms.ModelChoiceField(
-            queryset=PaymentType.objects.only('name'),
-            required=True,
-            empty_label="Select Payment Type"
-    )
-
-    user = forms.ModelChoiceField(
-            queryset=User.objects.all(),
-            required=True,
-            empty_label="Select User"
-     )
 
 

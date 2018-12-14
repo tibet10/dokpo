@@ -12,7 +12,7 @@
     <div class="payments">
         {% for payment in payments %}
             <div class="payment">
-                <h2><a href="{% url 'payments:detail' id=payment.id %}">{{ payment.subject }}</a></h2>
+                <h2><a href="{% url 'payments:detail' pk=payment.id %}">{{ payment.subject }}</a></h2>
                 <p>{{ payment.payment_type.name }}</p>
                 <p>{{ payment.details }}</p>
                 <p>{{ payment.amount }}</p>

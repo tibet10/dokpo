@@ -13,6 +13,7 @@ class Groups(models.Model):
     def __str__(self):
         return self.name
 
+    @property
     def payment_id(self):
         return self.payment.values_list('id', flat=True).first()
 
