@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PaymentForm
 from .models import Payments, PaymentStatus, PaymentType, PaymentMembership
 from groups.models import Groups
-from django.views.generic import TemplateView, DetailView, CreateView, FormView
+from django.views.generic import TemplateView, DetailView,FormView
+from core.utils.mixins import LoginRequiredMixin
 
 
-class PaymentsView(TemplateView):
+class PaymentsView(LoginRequiredMixin, TemplateView):
     template_name = 'payments/index.html'
 
     def get_payment(self):
@@ -22,13 +23,13 @@ class PaymentsView(TemplateView):
         return context
 
 
-class PaymentDetail(DetailView):
+class PaymentDetail(LoginRequiredMixin, DetailView):
     model = Payments
     template_name = 'payments/detail.html'
     context_object_name = 'payment'
 
 
-class PaymentFormView(FormView):
+class PaymentFormView(LoginRequiredMixin, FormView):
     template_name = "payments/create.html"
     form_class = PaymentForm
     success_url = '/'

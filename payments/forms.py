@@ -38,7 +38,6 @@ class PaymentForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         payment = super(PaymentForm, self).save(commit=False)
-        # current_group = Groups.objects.get(pk=1)
         payment.payment_status = PaymentStatus.objects.filter(name='Pending')[0]
         payment.payment_type = self.cleaned_data.get('payment_type')
         payment.created_by = self.user
