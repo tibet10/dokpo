@@ -46,10 +46,7 @@ class PaymentFormView(FormView):
         return kwargs
 
     def get_context_data(self, **kwargs):
-        group_id = self.kwargs.get('group_id')
-        group = get_object_or_404(Groups, pk=group_id)
         context = super(PaymentFormView, self).get_context_data(**kwargs)
-        # context['payment_form'] = PaymentForm(self.request.POST or None)
         context['title'] = 'Add New Payment'
         context['group'] = self.group()
         return context
