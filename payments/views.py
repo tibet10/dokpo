@@ -33,8 +33,14 @@ class PaymentFormView(FormView):
     form_class = PaymentForm
     success_url = '/'
 
+    def group(self):
+        group_id = self.kwargs.get('group_id')
+        group = get_object_or_404(Groups, pk=group_id)
+        return group
+
     def get_form_kwargs(self):
         kwargs = super(PaymentFormView, self).get_form_kwargs()
+        kwargs['group'] = self.group()
         if self.request.user:
             kwargs['user'] = self.request.user
         return kwargs
@@ -42,10 +48,10 @@ class PaymentFormView(FormView):
     def get_context_data(self, **kwargs):
         group_id = self.kwargs.get('group_id')
         group = get_object_or_404(Groups, pk=group_id)
-        context = super().get_context_data(**kwargs)
-        context['payment_form'] = PaymentForm(self.request.POST or None)
+        context = super(PaymentFormView, self).get_context_data(**kwargs)
+        # context['payment_form'] = PaymentForm(self.request.POST or None)
         context['title'] = 'Add New Payment'
-        context['group'] = group
+        context['group'] = self.group()
         return context
 
     def form_valid(self, form):

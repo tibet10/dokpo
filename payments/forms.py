@@ -28,6 +28,7 @@ class PaymentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
+        self.group = kwargs.pop('group', None)
         super(PaymentForm, self).__init__(*args, **kwargs)
         self.fields['details'].required = False
 
@@ -37,11 +38,11 @@ class PaymentForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         payment = super(PaymentForm, self).save(commit=False)
-        current_group = Groups.objects.get(pk=1)
+        # current_group = Groups.objects.get(pk=1)
         payment.payment_status = PaymentStatus.objects.filter(name='Pending')[0]
         payment.payment_type = self.cleaned_data.get('payment_type')
         payment.created_by = self.user
-        payment.group = current_group
+        payment.group = self.group
         payment.save()
         return payment
 
