@@ -1,39 +1,56 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import GroupForm, ExtraFieldForm
+from .forms import GroupForm
 from .models import Groups, GroupMembership, MemberStatus
+from django.views.generic import TemplateView, DetailView,FormView
+from core.utils.mixins import LoginRequiredMixin
 
 
-def home(request):
-    groups = Groups.objects.all()
-    return render(request, 'groups/index.html', {'description': 'Welcome to groups', 'groups': groups})
+class GroupView(LoginRequiredMixin, TemplateView):
+    template_name = 'groups/index.html'
+
+    def groups(self):
+        self.is_not_used()
+        groups = Groups.objects.all()
+        return groups
+
+    def is_not_used(self):
+        pass
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['groups'] = self.groups()
+        context['description'] = 'Welcome to groups'
+        return context
 
 
-def group_detail(request, id):
-    group = get_object_or_404(Groups, pk=id)
-    return render(request, "groups/detail.html", {'group': group})
+class GroupDetail(LoginRequiredMixin, DetailView):
+    model = Groups
+    template_name = 'groups/detail.html'
+    context_object_name = 'group'
 
 
-def group_create(request):
-    if request.method == 'POST':
-        group_form = GroupForm(request.POST or None)
-        extra_form = ExtraFieldForm(request.POST or None)
-        if group_form.is_valid() and extra_form.is_valid():
-            group = group_form.save(user=request.user)
+class GroupFormView(LoginRequiredMixin, FormView):
+    template_name = "groups/create.html"
+    form_class = GroupForm
+    success_url = '/'
 
-            group_member = GroupMembership()
-            group_member.group = group
-            group_member.user = request.user
-            group_member.member_status = MemberStatus.objects.filter(name='Approved')[0]
-            group_member.save()
+    def get_form_kwargs(self):
+        kwargs = super(GroupFormView, self).get_form_kwargs()
+        if self.request.user:
+            kwargs['user'] = self.request.user
+        return kwargs
 
-            return redirect('groups:detail', id=group.pk)
-    else:
-        group_form = GroupForm()
-        extra_form = ExtraFieldForm()
+    def get_context_data(self, **kwargs):
+        context = super(GroupFormView, self).get_context_data(**kwargs)
+        context['title'] = 'Add New Group'
+        return context
 
-    context = {
-        'group_form': group_form,
-        'extra_form': extra_form,
-        'title': 'Add New Group'
-    }
-    return render(request, "groups/create.html", context)
+    def form_valid(self, form):
+        group = form.save()
+        group_member = GroupMembership()
+        group_member.group = group
+        group_member.user = group.created_by
+        group_member.member_status = MemberStatus.objects.filter(name='Approved')[0]
+        group_member.save()
+        return redirect('groups:detail', pk=group.pk)
+

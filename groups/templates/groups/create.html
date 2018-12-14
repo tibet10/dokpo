@@ -13,38 +13,66 @@
          {% csrf_token %}
         <fieldset>
             <legend>{{ title }}:</legend>
-            {% for field in group_form %}
-                {{ field.errors }}
-                <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">{{ field.label }}</label>
-                        <div class="col-sm-6">
-                            {{ field }}
-                        </div>
-                        {% if field.help_text %}
-                            <p class="help-inline">
-                                <small>{{ field.help_text }}</small>
-                            </p>
-                        {% endif %}
-                 </div>
-            {% endfor %}
+            <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">{{ form.name.label }}</label>
+                    <div class="col-sm-6">
+                        {{ form.name }}
+                    </div>
+                    {% if field.name.help_text %}
+                        <p class="help-inline">
+                            <small>{{ form.name.help_text }}</small>
+                        </p>
+                    {% endif %}
+             </div>
+            <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">{{ form.details.label }}</label>
+                    <div class="col-sm-6">
+                        {{ form.details }}
+                    </div>
+                    {% if form.details.help_text %}
+                        <p class="help-inline">
+                            <small>{{ form.details.help_text }}</small>
+                        </p>
+                    {% endif %}
+             </div>
             <hr>
             <h3>Please send email invitations:</h3>
-            {% for field in extra_form %}
-                <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">{{ field.label }}</label>
-                        <div class="col-sm-6">
-                            {{ field }}
-                        </div>
-                        {% if field.help_text %}
-                            <p class="help-inline">
-                                <small>{{ field.help_text }}</small>
-                            </p>
-                        {% endif %}
+              <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">{{ form.email_1.label }}</label>
+                    <div class="col-sm-6">
+                        {{ form.email_1 }}
                     </div>
-            {% endfor %}
+                    {% if field.email_1.help_text %}
+                        <p class="help-inline">
+                            <small>{{ form.email_1.help_text }}</small>
+                        </p>
+                    {% endif %}
+                </div>
+              <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">{{ form.email_2.label }}</label>
+                    <div class="col-sm-6">
+                        {{ form.email_2 }}
+                    </div>
+                    {% if field.email_2.help_text %}
+                        <p class="help-inline">
+                            <small>{{ form.email_2.help_text }}</small>
+                        </p>
+                    {% endif %}
+                </div>
+              <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">{{ form.email_3.label }}</label>
+                    <div class="col-sm-6">
+                        {{ form.email_3 }}
+                    </div>
+                    {% if field.email_3.help_text %}
+                        <p class="help-inline">
+                            <small>{{ form.email_3.help_text }}</small>
+                        </p>
+                    {% endif %}
+                </div>
         </fieldset>
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary" >Add New Group</button>
+            <button type="submit" class="btn btn-primary" >Add</button>
         </div>
     </form>
     </div>

@@ -12,23 +12,6 @@ class GroupForm(forms.ModelForm):
 
     details = forms.CharField(widget=forms.Textarea(), required=False, label="Details")
 
-    def __init__(self, *args, **kwargs):
-        super(GroupForm, self).__init__(*args, **kwargs)
-
-    def save(self, user, *args, **kwargs):
-        group = super(GroupForm, self).save(commit=False)
-        group.name = self.cleaned_data['name']
-        group.details = self.cleaned_data['details']
-        group.created_by = user
-        group.save()
-        return group
-
-    class Meta:
-        model = Groups
-        fields = ['name', 'details']
-
-
-class ExtraFieldForm(forms.Form):
     email_1 = forms.EmailField(label='Email 1', widget=forms.TextInput(
         attrs={
             'class': 'form-control',
@@ -49,3 +32,20 @@ class ExtraFieldForm(forms.Form):
             'placeholder': 'Add email..'
         }
     ), required=False)
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(GroupForm, self).__init__(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        group = super(GroupForm, self).save(commit=False)
+        group.name = self.cleaned_data['name']
+        group.details = self.cleaned_data['details']
+        group.created_by = self.user
+        group.save()
+        return group
+
+    class Meta:
+        model = Groups
+        fields = ['name', 'details', 'email_1', 'email_2', 'email_3']
+
