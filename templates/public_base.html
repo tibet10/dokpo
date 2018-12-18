@@ -8,13 +8,13 @@
         <link rel="stylesheet" href="{% static 'css/navbar-top.css' %}">
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
-        {% block head %}
-        {% endblock %}
+        {% block head %}{% endblock %}
     </head>
     <body>
         {% include 'nav.html' with nav='Dhokpo'%}
         <div class="main-container">
             {% block body %}
+                {% include 'public.html' %}
             {% endblock %}
         </div>
         <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
