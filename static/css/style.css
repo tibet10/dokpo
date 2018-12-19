@@ -16,3 +16,8 @@
 {
     font-size: 87px;
 }
+
+.jumbotron{
+  background: url('');
+  background-size: cover;
+}
