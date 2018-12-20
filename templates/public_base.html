@@ -11,11 +11,9 @@
         {% block head %}{% endblock %}
     </head>
     <body>
-        {% include 'nav.html' with nav='Dhokpo'%}
+        {% include 'public_nav.html' with nav='Dhokpo'%}
         <div class="main-container">
-            {% block body %}
-                {% include 'public.html' %}
-            {% endblock %}
+            {% block body %}{% endblock %}
         </div>
         <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
         <script src="{% static 'js/popper.min.js' %}"></script>

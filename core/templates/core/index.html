@@ -3,3 +3,11 @@
 {% block head %}
     <title>{{ title }}</title>
 {% endblock %}
+
+{% block body %}
+       {% if user.is_authenticated %}
+           {% include 'core/admin.html' %}
+       {% else %}
+            {% include 'core/public.html' %}
+       {% endif %}
+{% endblock %}
