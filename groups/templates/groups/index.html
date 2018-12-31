@@ -16,7 +16,7 @@
                 <h2>{{ group.name  }} </h2>
                 <p>{{ group.details }}</p>
                 {% if group.payment_id %}
-                    <a href="{% url 'payments:group' pk=group.id %}">Show all payments</a>
+                    <a href="{% url 'payments:home' pk=group.id %}">Show all payments</a>
                 {% else %}
                     <a href="{% url 'payments:create' group_id=group.id %}">Create Payment</a>
                 {% endif %}

@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PaymentForm
-from .models import Payments, PaymentStatus, PaymentType, PaymentMembership
+from .models import Payments, PaymentType, PaymentMembership
 from groups.models import Groups
 from django.views.generic import TemplateView, DetailView,FormView
 from core.utils.mixins import LoginRequiredMixin
+from .tables import PaymentsTable
+from django_tables2 import SingleTableView
 
 
 class PaymentsView(LoginRequiredMixin, TemplateView):
@@ -19,7 +21,8 @@ class PaymentsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['payments'] = self.get_payment()
+        # context['payments'] = self.get_payment()
+        context['table_payments'] = PaymentsTable(self.get_payment())
         return context
 
 

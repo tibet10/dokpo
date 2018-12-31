@@ -1,5 +1,5 @@
 {% extends 'admin_base.html' %}
-
+{% load render_table from django_tables2 %}
 
 {% block head %}
     <title>Payments</title>
@@ -8,19 +8,26 @@
 {% endblock %}
 
 {% block body %}
- <div class="container">
-    <div class="payments">
-        {% for payment in payments %}
-            <div class="payment">
-                <h2><a href="{% url 'payments:detail' pk=payment.id %}">{{ payment.subject }}</a></h2>
-                <p>{{ payment.payment_type.name }}</p>
-                <p>{{ payment.details }}</p>
-                <p>{{ payment.amount }}</p>
-                <p>{{ payment.payment_status.name }}</p>
-                <p> {{ payment.created_by }}</p>
-                <p>{{ payment.created_date }}</p>
-            </div>
-        {% endfor %}
+    <div class="container">
+        <div class="payments">
+            {% render_table table_payments %}
+        </div>
     </div>
- </div>
+
+
+    {# <div class="container">#}
+    {#    <div class="payments">#}
+    {#        {% for payment in payments %}#}
+    {#            <div class="payment">#}
+    {#                <h2><a href="{% url 'payments:detail' pk=payment.id %}">{{ payment.subject }}</a></h2>#}
+    {#                <p>{{ payment.payment_type.name }}</p>#}
+    {#                <p>{{ payment.details }}</p>#}
+    {#                <p>{{ payment.amount }}</p>#}
+    {#                <p>{{ payment.payment_status.name }}</p>#}
+    {#                <p> {{ payment.created_by }}</p>#}
+    {#                <p>{{ payment.created_date }}</p>#}
+    {#            </div>#}
+    {#        {% endfor %}#}
+    {#    </div>#}
+    {# </div>#}
 {% endblock %}
